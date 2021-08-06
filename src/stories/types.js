@@ -38,7 +38,7 @@ export const userFields = {
     type: 'advanceSelect',
     label: 'Product',
     name: 'product',
-    target: 'http://localhost:5000/products',
+    target: 'https://react-auto-formgenerator.herokuapp.com/products',
     optionValue: 'id',
     optionLabel: 'name',
     multi: false,

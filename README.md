@@ -1,15 +1,15 @@
-# FormGenerator-React
+# React-Auto-FormGenerator
 
 A form generator for [React](https://reactjs.org/). If you don't want to write lot of forms then use this component to generate 
 forms by providing array of fields and it will generate forms from it. 
 
-See [formgenerator-react](https://zayn-m.github.io/formgenerator-react/) for live storybook.
+See [react-auto-formgenerator](https://zayn-m.github.io/react-auto-formgenerator/) for live storybook.
 
 # Installation and usage 
 
-The easiest way to formgenerator-react is to install it from npm and build it into your app with Webpack.
+The easiest way to react-auto-formgenerator is to install it from npm and build it into your app with Webpack.
 ```
-npm install formgenerator-react
+npm install react-auto-formgenerator
 ```
 
 Then use if in your app:
@@ -18,7 +18,7 @@ Then use if in your app:
 
 ```js
 import { Card, CardBody, CardHeader } from 'reactstrap';
-import { FormGenerator } from 'formgenerator-react';
+import { FormGenerator } from 'react-auto-formgenerator';
 
 function App() {
 
@@ -132,4 +132,19 @@ Common props you may want to specify include:
 - `formClassName` - class for form
 - `btnClassName` - class for form button
 
-If you like FormGenerator-React, please give it a star!
+### Note
+
+This component handles server side errors as well, but errors should be in this format:
+
+```js
+{
+  "errors": {
+    "email": "Invalid email",
+    "username": "This field is required",
+    "password": "Password should be between 4-20 characters",
+    ...
+  }
+}
+```
+
+If you like React-Auto-Formgenerator, please give it a star!

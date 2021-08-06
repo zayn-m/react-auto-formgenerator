@@ -17,7 +17,7 @@ stories.add('UserForm', () => {
             <FormGenerator 
               fields={userFields}
               idKey='_id'
-              apiUrl='http://localhost:5000' 
+              apiUrl='https://react-auto-formgenerator.herokuapp.com' 
               entity='users'
               showToast={true}
               submitCb={data => console.log('form submitted', data)}
@@ -35,13 +35,13 @@ stories.add('CandidateForm', () => {
       <div className='col-8 mx-auto'>
         <Card>
           <CardHeader>
-            <strong>Add User</strong>
+            <strong>Add Candidate</strong>
           </CardHeader>
           <CardBody>
             <FormGenerator 
               fields={candidateFields}
               idKey='_id'
-              apiUrl='http://localhost:5000' 
+              apiUrl='https://react-auto-formgenerator.herokuapp.com'
               entity='users'
               showToast={true}
               submitCb={data => console.log('form submitted', data)}
