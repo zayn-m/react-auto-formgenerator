@@ -48,7 +48,7 @@
     "url": "git+https://github.com/zayn-m/react-formgenerator.git"
   },
   "keywords": ["react-formgenerator", "forms", "react"],
-  "author": "",
+  "author": "zayn-m",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/zayn-m/react-formgenerator/issues"
