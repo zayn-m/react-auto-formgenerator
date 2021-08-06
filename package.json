@@ -1,6 +1,6 @@
 {
-  "name": "react-formgenerator",
-  "version": "1.0.3",
+  "name": "formgenerator-react",
+  "version": "1.0.4",
   "description": "React component to auto generate forms using objects",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -45,13 +45,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zayn-m/react-formgenerator.git"
+    "url": "git+https://github.com/zayn-m/formgenerator-react.git"
   },
-  "keywords": ["react-formgenerator", "forms", "react"],
+  "keywords": ["react-formgenerator", "formgenerator-react", "forms", "react"],
   "author": "zayn-m",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/zayn-m/react-formgenerator/issues"
+    "url": "https://github.com/zayn-m/formgenerator-react/issues"
   },
-  "homepage": "https://github.com/zayn-m/react-formgenerator#readme"
+  "homepage": "https://github.com/zayn-m/formgenerator-react#readme"
 }
