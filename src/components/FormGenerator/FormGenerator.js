@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-// import { Button, Input, Form, Collapse } from 'reactstrap';
 import Select from 'react-select';
 import Switch from "react-switch";
 import AsyncSelect from 'react-select/async';

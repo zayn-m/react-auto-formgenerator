@@ -1,6 +1,6 @@
 {
   "name": "react-auto-formgenerator",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "React component to auto generate forms using objects",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
