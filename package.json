@@ -1,7 +1,7 @@
 {
   "name": "react-formgenerator",
   "version": "1.0.0",
-  "description": "",
+  "description": "React component to auto generate forms using objects",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "dependencies": {
@@ -47,7 +47,7 @@
     "type": "git",
     "url": "git+https://github.com/zayn-m/react-formgenerator.git"
   },
-  "keywords": [],
+  "keywords": ["react-formgenerator", "forms", "react"],
   "author": "",
   "license": "ISC",
   "bugs": {
