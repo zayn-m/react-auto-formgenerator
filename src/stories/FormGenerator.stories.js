@@ -7,7 +7,7 @@ import { userFields, candidateFields } from './types';
 const stories = storiesOf('Forms', module);
 stories.add('UserForm', () => {
   return (
-    <div className='row w-100 vh-90 pt-5'>
+    <div className='row w-100 vh-90 pt-5 '>
       <div className='col-8 mx-auto'>
         <Card>
           <CardHeader>
