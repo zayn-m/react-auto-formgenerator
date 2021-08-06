@@ -76,7 +76,21 @@ function App() {
       type: 'switch',
       label: 'Active',
       name: 'active'
+    },
+    educationSection: {
+    label: 'Education',
+    type: 'section',
+    name: 'educationSection',
+    show: false,
+    fields: {
+      school: {
+        type: 'text',
+        label: 'Name of School/College',
+        name: 'school',
+        col: 12
+      }
     }
+  }
   }
 
   return (
