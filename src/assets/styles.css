@@ -1,0 +1,10 @@
+.section {
+  border: 1px solid #eee;
+  background-color: #F7F7F7;
+  padding: 10px 5px;
+  margin-top: 10px;
+}
+
+.section h4 {
+  cursor: pointer;
+}

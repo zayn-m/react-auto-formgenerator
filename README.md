@@ -1,70 +1,119 @@
-# Getting Started with Create React App
+# React-FormGenerator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A form generator for [React](https://reactjs.org/). If you don't want to write lot of forms then use this component to generate 
+forms by providing array of fields and it will generate forms from it. 
 
-## Available Scripts
+# Installation and usage 
 
-In the project directory, you can run:
+The easiest way to react-formgenerator is to install it from npm and build it into your app with Webpack.
+```
+npm install react-formgenerator
+```
 
-### `yarn start`
+Then use if in your app:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+#### With React Component
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```js
+import { Card, CardBody, CardHeader } from 'reactstrap';
+import { FormGenerator } from 'react-formgenerator';
 
-### `yarn test`
+function App() {
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  const fields = {
+    username: {
+      type: 'text',
+      label: 'Username',
+      name: 'username',
+      col: 6,
+      className: 'userinput'
+    },
+    email: {
+      type: 'email',
+      label: 'Email',
+      name: 'email',
+      col: 6
+    },
+    password: {
+      type: 'password',
+      label: 'Password',
+      name: 'password',
+      col: 6
+    },
+    role: {
+      type: 'advanceSelect',
+      label: 'Role',
+      name: 'role',
+      options: [
+        {
+          value: 'admin',
+          label: 'Admin'
+        },
+        {
+          value: 'customer',
+          label: 'Customer'
+        }
+      ],
+      col: 6
+    },
+    product: {
+      type: 'advanceSelect',
+      label: 'Product',
+      name: 'product',
+      target: 'http://localhost:5000/products',
+      optionValue: 'id',
+      optionLabel: 'name',
+      multi: false,
+      col: 6
+    },
+    file: {
+      type: 'file',
+      label: 'Image',
+      name: 'file',
+      col: 6
+    },
+    active: {
+      type: 'switch',
+      label: 'Active',
+      name: 'active'
+    }
+  }
 
-### `yarn build`
+  return (
+    <div className='row w-100 vh-90 pt-5'>
+      <div className='col-10 mx-auto'>
+        <Card>
+          <CardHeader>
+            <strong>Add User</strong>
+          </CardHeader>
+          <CardBody>
+            <FormGenerator 
+              fields={fields}
+              idKey='_id'
+              apiUrl='http://localhost:5000' 
+              entity='users'
+              showToast={true}
+              submitCb={data => console.log('form submitted', data)}
+            />
+          </CardBody>
+        </Card>
+      </div>
+    </div>
+  );
+}
+```
+### Props
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Common props you may want to specify include:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- `idKey` - id key name which is used in your database, for MongoDB it is generally _id
+- `apiUrl` - your base api url
+- `fields` - object of fields which will generate form
+- `entity` - endpoint entity
+- `targetId` - record id for edit case
+- `submitCb` - callback function which will trigger after success submit of form
+- `showToast` - to display default toast
+- `formClassName` - class for form
+- `btnClassName` - class for form button
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+If you like React FormGenerator, please give it a star!
