@@ -1,6 +1,5 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { Card, CardBody, CardHeader } from 'reactstrap';
 import { FormGenerator } from '../components/FormGenerator';
 import { userFields, candidateFields } from './types';
 
@@ -9,11 +8,11 @@ stories.add('UserForm', () => {
   return (
     <div className='row w-100 vh-90 pt-5  '>
       <div className='col-8 mx-auto'>
-        <Card>
-          <CardHeader>
+        <div className='card'>
+          <div className='card-header'>
             <strong>Add User</strong>
-          </CardHeader>
-          <CardBody>
+          </div>
+          <div className='card-body'>
             <FormGenerator 
               fields={userFields}
               idKey='_id'
@@ -22,8 +21,8 @@ stories.add('UserForm', () => {
               showToast={true}
               submitCb={data => console.log('form submitted', data)}
             />
-          </CardBody>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -33,11 +32,11 @@ stories.add('CandidateForm', () => {
   return (
     <div className='row w-100 vh-90 pt-5'>
       <div className='col-8 mx-auto'>
-        <Card>
-          <CardHeader>
+        <div className='card'>
+          <div className='card-header'>
             <strong>Add Candidate</strong>
-          </CardHeader>
-          <CardBody>
+          </div>
+          <div className='card-body'>
             <FormGenerator 
               fields={candidateFields}
               idKey='_id'
@@ -46,8 +45,8 @@ stories.add('CandidateForm', () => {
               showToast={true}
               submitCb={data => console.log('form submitted', data)}
             />
-          </CardBody>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );

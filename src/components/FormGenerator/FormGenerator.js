@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, Form, Collapse } from 'reactstrap';
+// import { Button, Input, Form, Collapse } from 'reactstrap';
 import Select from 'react-select';
 import Switch from "react-switch";
 import AsyncSelect from 'react-select/async';
@@ -96,8 +96,9 @@ export function FormGenerator(props) {
             case 'password':
             case 'number':
               return (
-                <Input
+                <input
                   {...currentField}
+                  className={`form-control ${currentField.className}`}
                   label={currentField.label}
                   name={currentField.name}
                   value={currentField.value}
@@ -269,9 +270,9 @@ export function FormGenerator(props) {
             finalData.push(
               <div key={index} className="section">
                 <h4 onClick={() => toggleSection(currentField)} >{currentField.label}</h4>
-                <Collapse isOpen={currentField.show} >
+                <div className={`collapse ${currentField.show ? 'show': ''}`} id={currentField.name}>
                   {renderFields(currentField.fields)}
-                </Collapse>
+                </div>
               </div>
             );
           } else {
@@ -344,10 +345,10 @@ export function FormGenerator(props) {
   };
 
   return (
-    <Form onSubmit={submit} className={props.formClassName}>
+    <form onSubmit={submit} className={props.formClassName}>
       {renderFields(fields)}
-      <Button className={`mt-3 ${props.btnClassName}`} color='success' disabled={loading}>Submit</Button>
-    </Form>
+      <button className={`mt-3 btn btn-success ${props.btnClassName}`} disabled={loading}>Submit</button>
+    </form>
   )
 }
 
