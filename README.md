@@ -3,6 +3,8 @@
 A form generator for [React](https://reactjs.org/). If you don't want to write lot of forms then use this component to generate 
 forms by providing array of fields and it will generate forms from it. 
 
+See [react-formgenerator](https://zayn-m.github.io/react-formgenerator/) for live storybook.
+
 # Installation and usage 
 
 The easiest way to react-formgenerator is to install it from npm and build it into your app with Webpack.
