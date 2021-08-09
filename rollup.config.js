@@ -26,28 +26,25 @@ export default [
       }
     ],
     plugins: [
-      replace({
-          "process.env.NODE_ENV": JSON.stringify("development")
-      }),
-      nodePolyfills(),
-      resolve({
-          browser: true
-      }),
-      commonjs({
-          include: /node_modules/,
-          namedExports: {
-              'react': Object.keys(React),
-              'react-dom': Object.keys(ReactDOM),
-          }
-      }),
       postcss({
         plugins: [],
         minimize: true,
       }),
+      commonjs({
+        include: /node_modules/,
+        namedExports: {
+          'react': Object.keys(React),
+          'react-dom': Object.keys(ReactDOM),
+        }
+      }),
       babel({
-        babelrc: true,
         exclude: 'node_modules/**',
-        presets: ['@babel/preset-react']
+        presets: ['@babel/preset-react'],
+        plugins: ['@babel/plugin-transform-arrow-functions']
+      }),
+      nodePolyfills(),
+      resolve({
+          browser: true
       }),
       terser()
     ]
