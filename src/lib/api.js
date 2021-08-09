@@ -20,7 +20,7 @@ class Api {
 		return response;
 	}
 
-	_handleError = (error) => {
+	_handleError(error) {
 		switch (error.response && error.response.status) {
 			case 401:
 				toast.error('Unauthorized, check console for details');
@@ -38,7 +38,7 @@ class Api {
 		return Promise.reject(error);
 	};
 
-	_redirectTo = (document, path) => {
+	_redirectTo(document, path) {
 		document.location = path;
 	};
 
@@ -64,7 +64,9 @@ class Api {
 		}
 
 		if (type === 'get') {
-			return this.service.get(path).then((response) => response.data);
+			return this.service.get(path).then(function(response) {
+				return response.data;
+			});
 		}
 
 		return this.service
@@ -74,7 +76,9 @@ class Api {
 				responseType: 'json',
 				data: payload
 			})
-			.then((response) => response.data);
+			.then(function(response) {
+				return response.data;
+			});
 	}
 }
 
