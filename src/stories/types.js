@@ -123,3 +123,153 @@ export const candidateFields = {
     }
   }
 }
+
+export const productFields = {
+  name: {
+    type: 'text',
+    label: 'Name',
+    name: 'name',
+    col: 6
+  },
+  sku: {
+    type: 'text',
+    label: 'SKU',
+    name: 'sku',
+    col: 6
+  },
+  name: {
+    type: 'text',
+    label: 'Name',
+    name: 'name',
+    col: 6
+  },
+  color: {
+    type: 'advanceSelect',
+    label: 'Color',
+    name: 'color',
+    col: 6,
+    options: [
+      {
+        value: 'red',
+        label: 'Red'
+      },
+      {
+        value: 'yellow',
+        label: 'Yello'
+      },
+      {
+        value: 'green',
+        label: 'Green'
+      }
+    ]
+  },
+  size: {
+    type: 'advanceSelect',
+    label: 'Size',
+    name: 'size',
+    col: 6,
+    options: [
+      {
+        value: 'S',
+        label: 'S'
+      },
+      {
+        value: 'M',
+        label: 'M'
+      },
+      {
+        value: 'L',
+        label: 'L'
+      }
+    ]
+  },
+  productNumber: {
+    type: 'text',
+    label: 'Product Number',
+    name: 'productNumber',
+    col: 6
+  },
+  metaDescriptionSection: {
+    label: 'Meta Description',
+    type: 'section',
+    name: 'metaDescriptionSection',
+    fields: {
+      title: {
+        type: 'text',
+        label: 'Meta Title',
+        name: 'title',
+        col: 12
+      },
+      keywords: {
+        type: 'text',
+        label: 'Meta Keywords',
+        name: 'keywords',
+        col: 12
+      },
+      description: {
+        type: 'text',
+        label: 'Meta Description',
+        name: 'description',
+        col: 12
+      }
+    }
+  },
+  priceSection: {
+    label: 'Price',
+    type: 'section',
+    name: 'priceSection',
+    fields: {
+      price: {
+        type: 'number',
+        label: 'Price ($)',
+        name: 'price',
+        col: 4
+      },
+      cost: {
+        type: 'number',
+        label: 'Cost ($)',
+        name: 'cost',
+        col: 4
+      },
+      specialPrice: {
+        type: 'number',
+        label: 'Special Price ($)',
+        name: 'specialPrice',
+        col: 4
+      }
+    },
+  },
+  groupPrices: {
+    label: 'Group Prices',
+    type: 'repeater',
+    name: 'groupPrices',
+    newBtnLabel: 'Add Group Price',
+    fields: {
+      group: {
+        type: 'advanceSelect',
+        name: 'group',
+        options: [
+          {
+            value: 'all',
+            label: 'All groups'
+          },
+          {
+            value: 'guest',
+            label: 'Guest'
+          }
+        ],
+        col: 4,
+      },
+      qty: {
+        type: 'number',
+        name: 'qty',
+        col: 4
+      },
+      discount: {
+        type: 'number',
+        name: 'discount',
+        col: 3
+      }
+    }
+  }
+}

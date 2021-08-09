@@ -37,3 +37,9 @@ export function objectToFormData(obj, rootName, ignoreList) {
 
   return formData;
 }
+
+export function getFieldName(fieldName) {
+    const oldNum = fieldName.split('$')[1];
+    const num = Number(fieldName.split('$')[1]) + 1;
+    return fieldName.replace(oldNum, num);
+}
