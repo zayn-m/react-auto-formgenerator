@@ -6,8 +6,7 @@ import AsyncSelect from 'react-select/async';
 import Api from '../../lib/api';
 import { toast } from 'react-toastify';
 import { objectToFormData, getFieldName } from '../../lib/utils';
-import RemoveImg from '../../assets/icons/remove.png';
-import AddImg from '../../assets/icons/add.png';
+import { addIcon, removeIcon } from '../../lib/svgs';
 
 import 'react-toastify/dist/ReactToastify.css';
 import '../../assets/bootstrap-grid.css';
@@ -162,7 +161,7 @@ export function FormGenerator(props) {
         case 'remove':
           return (
             <span className='r-fg-remove-group' onClick={() => removeGroupFields(currentField.name, schema.name)}>
-              <img src={RemoveImg} alt='remove' />
+              {removeIcon()}
             </span>
           )
 
@@ -331,7 +330,7 @@ export function FormGenerator(props) {
     let finalData = renderFields(currentField.fields, currentField);
     finalData.push(
       <div className='r-fg-new-btn-group'>
-        <img src={AddImg} alt='add' /> <span onClick={() => addGroupFields(currentField.name)}>{currentField.newBtnLabel}</span>
+        {addIcon()} <span onClick={() => addGroupFields(currentField.name)}>{currentField.newBtnLabel}</span>
       </div>
     )
     return finalData;

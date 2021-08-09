@@ -224,8 +224,8 @@ body {
   cursor: pointer;
 }
 
-.r-fg-remove-group img,
-.r-fg-new-btn-group img {
+.r-fg-remove-group svg,
+.r-fg-new-btn-group svg {
   width: 25px;
   height: 25px;
   cursor: pointer;
