@@ -38,6 +38,7 @@ export default [
         }
       }),
       babel({
+        babelrc: true,
         exclude: 'node_modules/**',
         presets: ['@babel/preset-react'],
         plugins: ['@babel/plugin-transform-arrow-functions']
