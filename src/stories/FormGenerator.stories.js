@@ -1,10 +1,10 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { FormGenerator } from '../components/FormGenerator';
-import { userFields, candidateFields } from './types';
+import { userFields, candidateFields, productFields } from './types';
 
 const stories = storiesOf('Forms', module);
-stories.add('UserForm', () => {
+stories.add('User Form', () => {
   return (
     <div className='row w-100 vh-90 pt-5  '>
       <div className='col-8 mx-auto'>
@@ -12,6 +12,7 @@ stories.add('UserForm', () => {
           <div className='card-header'>
             <strong>Add User</strong>
           </div>
+          <br />
           <div className='card-body'>
             <FormGenerator 
               fields={userFields}
@@ -28,7 +29,7 @@ stories.add('UserForm', () => {
   );
 });
 
-stories.add('CandidateForm', () => {
+stories.add('Candidate Form', () => {
   return (
     <div className='row w-100 vh-90 pt-5'>
       <div className='col-8 mx-auto'>
@@ -36,6 +37,7 @@ stories.add('CandidateForm', () => {
           <div className='card-header'>
             <strong>Add Candidate</strong>
           </div>
+          <br />
           <div className='card-body'>
             <FormGenerator 
               fields={candidateFields}
