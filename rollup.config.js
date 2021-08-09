@@ -26,6 +26,7 @@ export default [
       }
     ],
     plugins: [
+      external(),
       postcss({
         plugins: [],
         minimize: true,
