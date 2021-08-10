@@ -34,10 +34,10 @@ export const userFields = {
     ],
     col: 6
   },
-  product: {
+  album: {
     type: 'advanceSelect',
-    label: 'Product',
-    name: 'product',
+    label: 'Album',
+    name: 'album',
     target: 'https://react-auto-formgenerator.herokuapp.com/products',
     optionValue: 'id',
     optionLabel: 'name',
@@ -247,6 +247,7 @@ export const productFields = {
     fields: {
       group: {
         type: 'advanceSelect',
+        placeholder: 'Group',
         name: 'group',
         options: [
           {
@@ -262,11 +263,13 @@ export const productFields = {
       },
       qty: {
         type: 'number',
+        placeholder: 'Qty',
         name: 'qty',
         col: 4
       },
       discount: {
         type: 'number',
+        placeholder: 'Discount',
         name: 'discount',
         col: 3
       }

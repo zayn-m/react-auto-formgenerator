@@ -4,7 +4,7 @@ import { FormGenerator } from '../components/FormGenerator';
 import { userFields, candidateFields, productFields } from './types';
 
 const stories = storiesOf('Forms', module);
-stories.add('User Form', () => {
+stories.add('User', () => {
   return (
     <div className='row w-100 vh-90 pt-5  '>
       <div className='col-8 mx-auto'>
@@ -29,7 +29,7 @@ stories.add('User Form', () => {
   );
 });
 
-stories.add('Candidate Form', () => {
+stories.add('Candidate', () => {
   return (
     <div className='row w-100 vh-90 pt-5'>
       <div className='col-8 mx-auto'>
@@ -54,7 +54,7 @@ stories.add('Candidate Form', () => {
   );
 });
 
-stories.add('Product Form', () => {
+stories.add('Product', () => {
   return (
     <div className='row w-100 vh-90 pt-5'>
       <div className='col-8 mx-auto'>
