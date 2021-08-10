@@ -118,6 +118,72 @@ function App() {
   );
 }
 ```
+
+Schema for sections, these sections act as collapsible elements which render fields.
+
+```js
+export const sections = {
+  educationSection: {
+    label: 'Education',
+    type: 'section',
+    name: 'educationSection',
+    show: false,
+    fields: {
+      school: {
+        type: 'text',
+        label: 'Name of School/College',
+        name: 'school',
+        col: 12
+      }
+      ...
+    }
+  }
+}
+```
+
+Schema for dynamic fields, these fields are added inside sections for better UI.
+
+```js
+export const dynamicFields = {
+  groupPrices: {
+    label: 'Group Prices',
+    type: 'repeater',
+    name: 'groupPrices',
+    newBtnLabel: 'Add Group Price',
+    fields: {
+      group: {
+        type: 'advanceSelect',
+        placeholder: 'Group',
+        name: 'group',
+        options: [
+          {
+            value: 'all',
+            label: 'All groups'
+          },
+          {
+            value: 'guest',
+            label: 'Guest'
+          }
+        ],
+        col: 4,
+      },
+      qty: {
+        type: 'number',
+        placeholder: 'Qty',
+        name: 'qty',
+        col: 4
+      },
+      discount: {
+        type: 'number',
+        placeholder: 'Discount',
+        name: 'discount',
+        col: 3
+      }
+    }
+  }
+}
+```
+
 ### Props
 
 Common props you may want to specify include:

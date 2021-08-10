@@ -5,7 +5,7 @@ import Switch from "react-switch";
 import AsyncSelect from 'react-select/async';
 import Api from '../../lib/api';
 import { toast } from 'react-toastify';
-import { objectToFormData, getFieldName } from '../../lib/utils';
+import { objectToFormData, getFieldName, convertToArray, getNum, selectStyles } from '../../lib/utils';
 import { addIcon, removeIcon } from '../../lib/svgs';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,7 +18,6 @@ export function FormGenerator(props) {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-
   useEffect(() => {
     setPropFieldsToState();
     if (props.targetId) {
@@ -27,25 +26,29 @@ export function FormGenerator(props) {
   }, [])
 
   const setPropFieldsToState = () => {
-    const propFields = {...props.fields};
+    let propFields = JSON.parse(JSON.stringify(props.fields));
+    let repeaterFields;
     // changing structure for repeaters
     Object.keys(propFields).forEach(field => {
       if (props.fields[field].type && props.fields[field].type === 'repeater') {
-        const repeaterFields = props.fields[field].fields;
+        repeaterFields = propFields[field].fields;
         Object.keys(repeaterFields).forEach(f => {
           // creating new fields and deleting old,
           // doing this because newly dynamic generated fields will have indexes as unique names
-          repeaterFields[`${f}$0`] = {
+          const propKey = `${f}$0`;
+          repeaterFields[propKey] = {
             ...repeaterFields[f],
-            name: `${f}$0`
+            name: propKey
           };
           delete repeaterFields[f];
         })
         repeaterFields['remove$0'] = {
           type: 'remove',
           name: 'remove$0', 
+          section: true,
           col: 1
         };
+        propFields[field].fields = { ...repeaterFields };
       }
     })
     setFields(propFields);
@@ -71,20 +74,38 @@ export function FormGenerator(props) {
   }
 
   /**
-   * Handle input change event
+   * Handle input change events
    * @param {string} currentField 
-   * @param {string} value 
+   * @param {string} value
+   * @param {Object} schema
    */
-  const handleInputChange = (currentField, value) => {
+  const handleInputChange = (currentField, value, schema) => {
     // changing values in static fields array
-    setFields({
-      ...fields,
-      [currentField.name]: {
-        ...fields[currentField.name],
-        handleChange: true,
-        value
-      }
-    });
+    if (schema && schema.type === 'repeater') {
+      setFields({
+        ...fields,
+        [schema.name]: {
+          ...schema,
+          fields: {
+            ...schema.fields,
+            [currentField.name]: {
+              ...currentField,
+              handleChange: true,
+              value
+            }
+          }
+        }
+      })
+    } else {
+      setFields({
+        ...fields,
+        [currentField.name]: {
+          ...fields[currentField.name],
+          handleChange: true,
+          value
+        }
+      });
+    }
   }
 
   /**
@@ -100,7 +121,6 @@ export function FormGenerator(props) {
       }
     });
   }
-
   /**
    * This is used to render HTML fields using objects
    * @param {Object} currentField 
@@ -116,8 +136,8 @@ export function FormGenerator(props) {
         case 'number':
           return (
             <input
-              {...currentField}
               className={`r-fg-formcontrol ${currentField.className}`}
+              placeholder={currentField.placeholder}
               label={currentField.label}
               name={currentField.name}
               value={currentField.value}
@@ -125,7 +145,7 @@ export function FormGenerator(props) {
               id={currentField.name}
               type={currentField.type}
               onChange={(e) => {
-                handleInputChange(currentField, e.target.value);
+                handleInputChange(currentField, e.target.value, schema);
               }}
             />
           );
@@ -143,7 +163,7 @@ export function FormGenerator(props) {
               activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
               height={20}
               width={48}
-              onChange={(event) => handleInputChange(currentField, event)}
+              onChange={(event) => handleInputChange(currentField, event, schema)}
             />
           );
 
@@ -154,7 +174,7 @@ export function FormGenerator(props) {
               type="file" 
               id={currentField.name} 
               name={currentField.name} 
-              onChange={e => handleInputChange(currentField, e.target.files[0])} 
+              onChange={e => handleInputChange(currentField, e.target.files[0], schema)} 
             />
           )
 
@@ -174,7 +194,8 @@ export function FormGenerator(props) {
             if (currentField.limit) targetUrl = currentField.target + `?limit=${currentField.limit}`;
             else targetUrl = currentField.target;
 
-            return new Api(props.apiUrl).request('get', targetUrl).then((res) => {
+            // TODO: handle cases for sections
+            return new Api(props.apiUrl).request('get', targetUrl).then((res) => {  
               const optionsToSet = {
                 ...fields,
                 [currentField.name]: {
@@ -182,25 +203,26 @@ export function FormGenerator(props) {
                   options: res.data
                 }
               };
-
               setFields(optionsToSet);
+              
               return res.data;
             });
           };
 
           const onSelect = (value) => {
             if (currentField.multi) {
-              handleInputChange(currentField, value ? value.map(v => v[currentField.optionValue]) : [] );
+              handleInputChange(currentField, value ? value.map(v => v[currentField.optionValue]) : [], schema);
             } else {
-              handleInputChange(currentField, value[currentField.optionValue]);
+              handleInputChange(currentField, value[currentField.optionValue], schema);
             }
           }
 
           if (currentField.target) {
             return (
               <AsyncSelect
-                {...currentField}
                 className={`r-fg-select ${currentField.className}`}
+                styles={selectStyles}
+                placeholder={currentField.placeholder}
                 isSearchable={currentField.search}
                 isDisabled={currentField.disabled}
                 cacheOptions
@@ -230,10 +252,11 @@ export function FormGenerator(props) {
                   currentField,
                   prev.removedValue
                     ? prev.removedValue[currentField.optionValue].toString()
-                    : v[v.length - 1][currentField.optionValue].toString()
+                    : v[v.length - 1][currentField.optionValue].toString(),
+                  schema
                 );
               } else {
-                handleInputChange(currentField, v.value);
+                handleInputChange(currentField, v.value, schema);
               }
             }
 
@@ -249,10 +272,11 @@ export function FormGenerator(props) {
             }
             return (
               <Select
-                {...currentField}
+                styles={selectStyles}
                 cacheOptions
                 defaultOptions
                 className={`r-fg-select ${currentField.className}`}
+                placeholder={currentField.placeholder}
                 isDisabled={currentField.disabled}
                 options={currentField.options}
                 isMulti={currentField.type_id === 'multiselect' ? true : false}
@@ -290,37 +314,50 @@ export function FormGenerator(props) {
     const stateFields = {...fields};
     Object.keys(stateFields[name].fields).forEach(fld => {
       const fldObject = stateFields[name].fields[fld];
-
       stateFields[name].fields[getFieldName(fld)] = {
         ...fldObject,
         value: '',
         name: getFieldName(fld)
       };      
     })
-
     setFields(stateFields);
   }
 
   const removeGroupFields = (name, schemaName) => {
-    console.log(name, schemaName);
-    // TODO: to implement it properly
     const num = name.split('$')[1];
     if (num === '0') return;
     const stateFields = {...fields};
-    
-    function getNum(fldName) {
-      return Number(fldName.split('$')[1]);
+
+    // converting objects into array to keep track of indexes when deleting
+    let fieldsArr = [];
+    fieldsArr = convertToArray(stateFields[schemaName].fields);
+    fieldsArr.splice(getNum(name), 1);
+
+    for (let [indx, field] of fieldsArr.entries()) {
+      Object.keys(field).forEach(fldObjKey => {
+        fieldsArr[indx] = {
+          ...fieldsArr[indx],
+          [`${fldObjKey.split('$')[0]}$${indx}`]: {
+            ...field[fldObjKey],
+            name: `${fldObjKey.split('$')[0]}$${indx}`
+          }
+        }
+        // deleting duplicated field objects
+        if (fldObjKey.split('$')[1] != indx) {
+          delete fieldsArr[indx][fldObjKey];
+        }
+      })
     }
 
-    Object.keys(stateFields[schemaName].fields).forEach(field => {
-      if (getNum(name) > getNum(field)) {
-        stateFields[schemaName].fields[`${field}$${getNum(field)-1}`] = {
-          ...stateFields[schemaName].fields[field],
-          name: `${field}$${getNum(field)-1}`
-        }
+    let finalObj = {};
+
+    for (let obj of fieldsArr) {
+      finalObj = {
+        ...finalObj,
+        ...obj
       }
-      delete stateFields[schemaName].fields[field];
-    })
+    }
+    stateFields[schemaName].fields = finalObj;
     setFields(stateFields);
   }
 
@@ -330,7 +367,7 @@ export function FormGenerator(props) {
     let finalData = renderFields(currentField.fields, currentField);
     finalData.push(
       <div className='r-fg-new-btn-group'>
-        {addIcon()} <span onClick={() => addGroupFields(currentField.name)}>{currentField.newBtnLabel}</span>
+        {addIcon()} <small onClick={() => addGroupFields(currentField.name)}>{currentField.newBtnLabel}</small>
       </div>
     )
     return finalData;
@@ -375,6 +412,7 @@ export function FormGenerator(props) {
 		let finalData = [],
 			rowData = [];
 
+      // making HTML from field objects and pushing to finalData
       Object.keys(fields).forEach((field, index, fieldsArr) => {
         let currentField = fields[field],
           inputField = '';
@@ -384,7 +422,7 @@ export function FormGenerator(props) {
         rowData.push(inputField);
   
         if (colCount > 11 || fieldsArr.length === index + 1) {
-          if (currentField.type === 'section' || currentField.type === 'repeater') {
+          if (['section', 'repeater'].includes(currentField.type)) {
             finalData.push(renderSection(currentField, index, schema));
           } else {
             finalData.push(
@@ -398,7 +436,7 @@ export function FormGenerator(props) {
         }
       });
       return finalData;
-  };
+  }
 
   const resetForm = () => {
     Object.keys(fields).forEach(field =>{
@@ -421,11 +459,32 @@ export function FormGenerator(props) {
 		let type = targetId ? 'patch' : 'post';
 
 		Object.keys(fields).forEach((field) => {
-			data = {
-				...data,
-				[field]: fields[field].value
-			};
+      if (fields[field].type === 'repeater') {
+        // linearize to array
+        let arr = convertToArray(fields[field].fields);
+        for (let [indx, obj] of arr.entries()) {
+          Object.keys(obj).forEach(objKey => {
+            arr[indx] = {
+              ...arr[indx],
+              [objKey.split('$')[0]]: obj[objKey].value
+            }
+            delete arr[indx][objKey];
+          })
+        }
+
+        data = {
+          ...data,
+          [field]: arr
+        }
+
+      } else {
+        data = {
+          ...data,
+          [field]: fields[field].value
+        };
+      }
 		});
+    
     data = objectToFormData(data);
 
 		new Api(props.apiUrl).request(type, url, data)
@@ -453,7 +512,7 @@ export function FormGenerator(props) {
 			.finally(() => {
         setLoading(false);
 			});
-  };
+  }
 
   return (
     <form onSubmit={submit} className={props.formClassName}>
@@ -468,7 +527,7 @@ FormGenerator.propTypes = {
   apiUrl: PropTypes.string.isRequired,
 	fields: PropTypes.object.isRequired,
 	entity: PropTypes.string.isRequired,
-	targetId: PropTypes.number.isRequired | PropTypes.string.isRequired,
+	targetId: PropTypes.string,
   submitCb: PropTypes.func,
   showToast: PropTypes.bool.isRequired,
   formClassName: PropTypes.string,
