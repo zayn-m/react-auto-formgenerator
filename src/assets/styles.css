@@ -223,19 +223,25 @@ body {
   padding: 10px 0px;
   display: flex;
   align-items: center;
-  cursor: pointer;
 }
 
-.r-fg-new-btn-group svg {
+.r-fg-new-btn-group span svg {
   margin-right: 5px;
 }
 
-.r-fg-new-btn-group small {
+.r-fg-remove-group svg {
+  width: 25px;
+  height: 25px;
   cursor: pointer;
 }
 
-.r-fg-remove-group svg,
-.r-fg-new-btn-group svg {
+.r-fg-new-btn-group span {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.r-fg-new-btn-group span svg {
   width: 25px;
   height: 25px;
   cursor: pointer;
