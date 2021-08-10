@@ -194,17 +194,32 @@ export function FormGenerator(props) {
             if (currentField.limit) targetUrl = currentField.target + `?limit=${currentField.limit}`;
             else targetUrl = currentField.target;
 
-            // TODO: handle cases for sections
-            return new Api(props.apiUrl).request('get', targetUrl).then((res) => {  
-              const optionsToSet = {
-                ...fields,
-                [currentField.name]: {
-                  ...currentField,
-                  options: res.data
-                }
-              };
-              setFields(optionsToSet);
-              
+            return new Api(props.apiUrl).request('get', targetUrl).then((res) => {
+              if (schema && schema.type === 'repeater') {
+                const optionsToSet = {
+                  ...fields,
+                  [schema.name]: {
+                    ...schema,
+                    fields: {
+                      ...schema.fields,
+                      [currentField.name]: {
+                        ...currentField,
+                        options: res.data
+                      }
+                    }
+                  }
+                };
+                setFields(optionsToSet);
+              } else {
+                const optionsToSet = {
+                  ...fields,
+                  [currentField.name]: {
+                    ...currentField,
+                    options: res.data
+                  }
+                };
+                setFields(optionsToSet);
+              }
               return res.data;
             });
           };
@@ -217,10 +232,26 @@ export function FormGenerator(props) {
             }
           }
 
+          const onFocus = () => {
+            if (schema && (schema.type === 'section' || schema.type === 'repeater')) {
+              const element = document.getElementsByClassName(schema.name)[0];
+              const selectEl = document.getElementsByClassName('r-fg-select__menu')[0] || 180;                
+              element.style.height = element.clientHeight + (currentField.options.length * 36) + 'px';
+            }
+          }
+
+          const onBlur = () => {
+            if (schema && (schema.type === 'section' || schema.type === 'repeater')) {
+              const element = document.getElementsByClassName(schema.name)[0];
+              element.style.height = 'auto';
+            }
+          }
+
           if (currentField.target) {
             return (
               <AsyncSelect
                 className={`r-fg-select ${currentField.className}`}
+                classNamePrefix='r-fg-select'
                 styles={selectStyles}
                 placeholder={currentField.placeholder}
                 isSearchable={currentField.search}
@@ -243,6 +274,8 @@ export function FormGenerator(props) {
                 getOptionValue={(e) => e[currentField.optionValue]}
                 loadOptions={loadOptions}
                 onChange={(v) => onSelect(v)}
+                onFocus={onFocus}
+                onBlur={onBlur}
               />
             );
           } else {
@@ -276,6 +309,7 @@ export function FormGenerator(props) {
                 cacheOptions
                 defaultOptions
                 className={`r-fg-select ${currentField.className}`}
+                classNamePrefix='r-fg-select'
                 placeholder={currentField.placeholder}
                 isDisabled={currentField.disabled}
                 options={currentField.options}
@@ -290,6 +324,8 @@ export function FormGenerator(props) {
                   )
                 }
                 onChange={(v, prev) => setValue(v, prev)}
+                onFocus={onFocus}
+                onBlur={onBlur}
               />
             );
           }
@@ -324,13 +360,14 @@ export function FormGenerator(props) {
   }
 
   const removeGroupFields = (name, schemaName) => {
-    const num = name.split('$')[1];
-    if (num === '0') return;
     const stateFields = {...fields};
 
     // converting objects into array to keep track of indexes when deleting
     let fieldsArr = [];
     fieldsArr = convertToArray(stateFields[schemaName].fields);
+
+    if (fieldsArr.length === 1) return;
+
     fieldsArr.splice(getNum(name), 1);
 
     for (let [indx, field] of fieldsArr.entries()) {
@@ -360,14 +397,16 @@ export function FormGenerator(props) {
     stateFields[schemaName].fields = finalObj;
     setFields(stateFields);
   }
-
+  
   const renderRepeater = (currentField) => {
     if (!currentField || !currentField.fields) return <div>No fields schema object</div>;
 
     let finalData = renderFields(currentField.fields, currentField);
     finalData.push(
       <div className='r-fg-new-btn-group'>
-        {addIcon()} <small onClick={() => addGroupFields(currentField.name)}>{currentField.newBtnLabel}</small>
+        <span onClick={() => addGroupFields(currentField.name)}>
+          {addIcon()}<small>{currentField.newBtnLabel}</small>
+        </span>
       </div>
     )
     return finalData;
@@ -390,7 +429,7 @@ export function FormGenerator(props) {
           {currentField.label}
         </label>
         <div 
-          className={`r-fg-section-content ${currentField.show ? 'show': ''}`} 
+          className={`r-fg-section-content ${currentField.name} ${currentField.show ? 'show': ''}`} 
           id={currentField.name}
         >
           {currentField.type === 'repeater' ? renderRepeater(currentField, index) : renderFields(currentField.fields)}
